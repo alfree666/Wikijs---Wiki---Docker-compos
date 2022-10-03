@@ -1,0 +1,33 @@
+version: "3.3"
+
+services:
+
+  wiki:
+    image: ghcr.io/requarks/wiki:2.5
+    container_name: wiki
+    depends_on:
+      - db
+    environment:
+      DB_TYPE: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: wikijs
+      DB_PASS: wikijsrocks
+      DB_NAME: wiki
+    restart: unless-stopped
+    ports:
+      - "8200:3000"
+
+  db:
+    image: mariadb
+    environment:
+      MYSQL_DATABASE: wiki
+      MYSQL_USER: wikijs
+      MYSQL_PASSWORD: wikijsrocks
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    restart: unless-stopped
+    volumes:
+      - ./db-data:/var/lib/mysql    
+
+      
+ 
